@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html lang="en" class="no-js shitty"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en" class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Spreadsheet -&gt; OPML Generator</title>
+  <meta name="author" content="Pamela Fox">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="http://fonts.googleapis.com/css?family=Francois+One:regular&v1" rel="stylesheet" type="text/css">
+  <style>
+    body {
+       font-family: 'Francois One', sans-serif;
+     }
+  </style>
+</head>
+<body>
+
+  <h1>Spreadsheet -&gt; OPML Generator</h1>
+
+  <p>An OPML describes a set of RSS feeds, and is a nice way of sharing a
+  set of feeds with the world. You can use this app to generate an OPML
+  based on a public Google Spreadsheet.
+  <ol>
+    <li>Create a spreadsheet with columns "title" and "url".
+    <li>Publish the spreadsheet by clicking "Share" -> "Publish as a webpage"
+    -> "Start publishing." Set it to auto-publish on save if you want.
+    <li>Enter the URL of the spreadsheet below: <br>
+    <input type="text" id="ss-url" style="width:400px">
+    <li>Enter a title for the OPML (optional): <br>
+    <input type="text" id="opml-title" style="width:200px">
+    <li>Your OPML should now be generated at this URL: <br>
+    <input type="text" id="opml-url" readonly style="width:400px">
+    <li>Now you can share that URL with others and they can do exciting
+    things like <a href="http://www.google.com/support/reader/bin/answer.py?hl=en&answer=69982">
+      import it into Google Reader</a>.
+  </ol>
+  <p>Note: This is not a production-level service,
+  it it just a tool I put together for use on my
+  <a href="http://www.primalpaleorecipes.com/">recipe blogs portal</a>.
+  You can deploy your own version of this or modify it for your needs
+  by grabbing the source code from github.
+  </p>
+
+  <script>
+function updateOPMLUrl() {
+  var ssUrl = document.getElementById('ss-url').value;
+  var ssKey = ssUrl.split('key=')[1];
+  ssKey = ssKey.split('&')[0];
+  var opmlUrl = 'http://' + window.location.hostname + '/opml?sskey=' + ssKey + '&wsid=od6';
+
+  var opmlTitle = document.getElementById('opml-title').value;
+  if (opmlTitle != '') opmlUrl += '&title=' + opmlTitle;
+  document.getElementById('opml-url').value = opmlUrl;
+}
+
+document.getElementById('ss-url').addEventListener('change', function(event) {
+  updateOPMLUrl();
+});
+document.getElementById('opml-title').addEventListener('change', function(event) {
+  updateOPMLUrl();
+});
+ </script>
+</body>
+</html>
