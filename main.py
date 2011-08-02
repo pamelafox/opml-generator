@@ -47,7 +47,7 @@ class FeedOPML(BaseRequestHandler):
     return 'opml.xml'
 
   def get_cachename(self):
-    return 'feedopml'
+    return 'feedopml' + self.request.get('sskey') + self.request.get('wsid', 'od6')
 
   def get_values(self):
     title = self.request.get('title', 'Custom OPML')
